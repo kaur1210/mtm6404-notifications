@@ -1,34 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { notificationsData } from './notifications'; // Import notification data
+import NotificationList from './components/NotificationList'; // Import NotificationList component
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Initialize state with notificationsData
+  const [notifications, setNotifications] = useState(notificationsData);
+
+  // Function to clear an individual notification by id
+  const clearNotification = (id) => {
+    setNotifications(notifications.filter(notification => notification.id !== id));
+  };
+
+  // Function to clear all notifications
+  const clearAllNotifications = () => {
+    setNotifications([]);
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="App container mt-5">
+      <h1 className="text-center mb-4">Notifications</h1>
+
+      {/* Display total count of notifications */}
+      <h2 className="text-center mb-4">
+        Notifications ({notifications.length})
+      </h2>
+
+      {/* Render the NotificationList component to display notifications */}
+      <NotificationList notifications={notifications} onClear={clearNotification} />
+
+      {/* Button to clear all notifications */}
+      <div className="text-center mt-4">
+        <button 
+          onClick={clearAllNotifications} 
+          className="btn btn-danger">
+          Clear All Notifications
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
